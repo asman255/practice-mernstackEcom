@@ -1,8 +1,10 @@
 import React from "react";
 import { assets } from "../assets/assets";
 import { useState } from "react";
-import { use } from "react";
-const Add = () => {
+import axios from "axios";
+import { backendUrl } from "../App";
+import { toast } from "react-toastify";
+const Add = ({ token }) => {
   const [image1, setImage1] = useState(false);
   const [image2, setImage2] = useState(false);
   const [image3, setImage3] = useState(false);
@@ -27,13 +29,34 @@ const Add = () => {
       formData.append("subCategory", subCategory);
       formData.append("bestseller", bestseller);
       formData.append("sizes", JSON.stringify(sizes));
-      
-      image1 &&  formData.append("image1", image1);
-      image2 &&  formData.append("image2", image2);
-      image3 &&  formData.append("image3", image3);
-      image4 &&  formData.append("image4", image4);
 
-    } catch (error) {}
+      image1 && formData.append("image1", image1);
+      image2 && formData.append("image2", image2);
+      image3 && formData.append("image3", image3);
+      image4 && formData.append("image4", image4);
+
+      const response = await axios.post(
+        backendUrl + "/api/product/add",
+        formData,
+        {
+          headers: { token },
+        }
+      );
+
+      if (response.data.success) {
+        toast.success(response.data.messege);
+        setName("");
+        setDescription("");
+        setImage1(false);
+        setImage2(false);
+        setImage3(false);
+        setImage4(false);
+        setPrize("");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(response.data.messege);
+    }
   };
 
   return (
