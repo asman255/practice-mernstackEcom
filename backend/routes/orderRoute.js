@@ -7,7 +7,7 @@ import {placeOrder,placerderStripe,placeOrderRazorpay,allOrders,userOrders,updat
 const orderRouter = express.Router()
 // admin features
 orderRouter.post('/list',adminAuth,allOrders)
-orderRouter.post('/หะฟะีห',adminAuth,updateStatus)
+orderRouter.post('/status',adminAuth,updateStatus)
 
 
 // payment feature
