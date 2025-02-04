@@ -87,6 +87,24 @@ const placerderStripe = async (req, res) => {
     res.json({ success: false, messege: error.messege });
   }
 };
+
+// verifystripe
+const verifyStripe = async (req, res) => {
+  const { orderId, success, userId } = req.body;
+  try {
+    if (success === "true") {
+      await orderModel.findByIdAndUpdate(orderId, { payment: true });
+      await userModel.findByIdAndUpdate(userId, { cartData: {} });
+      res.json({ success: true });
+    } else {
+      await orderModel.findByIdAndDelete(orderId);
+      res.json({ success: false });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, messege: error.messege });
+  }
+};
 // place orders using razorpay method
 const placeOrderRazorpay = async (req, res) => {};
 
@@ -134,4 +152,5 @@ export {
   allOrders,
   userOrders,
   updateStatus,
+  verifyStripe
 };
